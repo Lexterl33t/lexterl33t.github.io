@@ -2,8 +2,12 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>http://example.org/</loc><lastmod>2023-09-04T03:54:04&#43;02:00</lastmod></url><url>
-            <loc>http://example.org/posts/</loc><lastmod>2023-09-04T03:54:04&#43;02:00</lastmod></url><url>
+            <loc>http://example.org/posts/knightctf-switchbank/</loc><lastmod>2023-09-04T04:38:26&#43;02:00</lastmod></url><url>
+            <loc>http://example.org/</loc><lastmod>2023-09-04T04:38:26&#43;02:00</lastmod></url><url>
+            <loc>http://example.org/posts/</loc><lastmod>2023-09-04T04:38:26&#43;02:00</lastmod></url><url>
+            <loc>http://example.org/posts/config-loader-hacksecureims/</loc><lastmod>2023-09-04T04:35:12&#43;02:00</lastmod></url><url>
+            <loc>http://example.org/posts/fcsc-2023-tweedle-dee-web/</loc><lastmod>2023-09-04T04:31:31&#43;02:00</lastmod></url><url>
+            <loc>http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/</loc><lastmod>2023-09-04T04:26:39&#43;02:00</lastmod></url><url>
             <loc>http://example.org/posts/writeup-htb-business-ctf-license-generator/</loc><lastmod>2023-09-04T03:54:04&#43;02:00</lastmod></url><url>
             <loc>http://example.org/posts/hello/</loc><lastmod>2023-09-04T03:12:28&#43;02:00</lastmod></url><url>
             <loc>http://example.org/categories/</loc></url><url>

