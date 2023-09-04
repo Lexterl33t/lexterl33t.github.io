@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Writeup HTB Business CTF License Generator - LexterSecurity</title><meta name="Description" content="Fun research blog "><meta property="og:title" content="Writeup HTB Business CTF License Generator" />
+<meta property="og:description" content="Free license generator by Lxt3h and mhoste
+This was the hardest reverse engineering challenge from HTB Buisness CTF. This chall helped us to improve our skills in WinAPI and Miasm.
+The challenge provides us a PCAP and a x86 PE binary being a malware. The PCAP is the a record of the communication between the victim and the C2.
+PCAP analysis This is what it looks like : Here is a diagram of the communication :" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/writeup-htb-business-ctf-license-generator/" /><meta property="og:image" content="http://example.org/img/logo.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-04T03:54:04+02:00" />
+<meta property="article:modified_time" content="2023-09-04T03:54:04+02:00" /><meta property="og:site_name" content="LexterSecurity - Blog" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://example.org/img/logo.jpg"/>
+
+<meta name="twitter:title" content="Writeup HTB Business CTF License Generator"/>
+<meta name="twitter:description" content="Free license generator by Lxt3h and mhoste
+This was the hardest reverse engineering challenge from HTB Buisness CTF. This chall helped us to improve our skills in WinAPI and Miasm.
+The challenge provides us a PCAP and a x86 PE binary being a malware. The PCAP is the a record of the communication between the victim and the C2.
+PCAP analysis This is what it looks like : Here is a diagram of the communication :"/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/writeup-htb-business-ctf-license-generator/" /><link rel="prev" href="http://example.org/posts/hello/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Writeup HTB Business CTF License Generator",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/example.org\/posts\/writeup-htb-business-ctf-license-generator\/"
+        },"genre": "posts","wordcount":  1683 ,
+        "url": "http:\/\/example.org\/posts\/writeup-htb-business-ctf-license-generator\/","datePublished": "2023-09-04T03:54:04+02:00","dateModified": "2023-09-04T03:54:04+02:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lxt3h"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="LexterSecurity"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/bryton.png"
+        data-srcset="/img/bryton.png, /img/bryton.png 1.5x, /img/bryton.png 2x"
+        data-sizes="auto"
+        alt="/img/bryton.png"
+        title="/img/bryton.png" width="128" height="128" />LexterSecurity</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="LexterSecurity"><img
+        class="lazyload logo"
+        src="/svg/loading.min.svg"
+        data-src="/img/bryton.png"
+        data-srcset="/img/bryton.png, /img/bryton.png 1.5x, /img/bryton.png 2x"
+        data-sizes="auto"
+        alt="/img/bryton.png"
+        title="/img/bryton.png" width="128" height="128" />LexterSecurity</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Writeup HTB Business CTF License Generator</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Lxt3h</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-04">2023-09-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1683 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#pcap-analysis">PCAP analysis</a></li>
+    <li><a href="#static-analysis-of-pe">Static analysis of PE</a></li>
+    <li><a href="#dynamic-analysis">Dynamic analysis</a>
+      <ul>
+        <li><a href="#ntsetinformationthread">NtSetInformationThread</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#analysis-of-the-last-shellcode">Analysis of the last shellcode</a>
+      <ul>
+        <li><a href="#first-part-of-the-shellcode">First part of the shellcode</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="free-license-generator">Free license generator</h1>
+<blockquote>
+<p>by Lxt3h and mhoste</p>
+</blockquote>
+<p>This was the hardest reverse engineering challenge from HTB Buisness CTF. This chall helped us to improve our skills in WinAPI and Miasm.</p>
+<p>The challenge provides us a PCAP and a x86 PE binary being a malware. The PCAP is the a record of the communication between the victim and the C2.</p>
+<h2 id="pcap-analysis">PCAP analysis</h2>
+<p>This is what it looks like :
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130515622523052042/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130515622523052042/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130515622523052042/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130515622523052042/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130515622523052042/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130515622523052042/image.png" /></p>
+<p>Here is a diagram of the communication :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/network.png"
+        data-srcset="/img/network.png, /img/network.png 1.5x, /img/network.png 2x"
+        data-sizes="auto"
+        alt="/img/network.png"
+        title="/img/network.png" width="828" height="549" /></p>
+<p>First, the victim send &ldquo;auth&rdquo; to authenticate with the C2, the C2 respond with a possible key, then the victim sends an other key similar to the first encrypted first key, with his length.
+In a second time, the server respond with a lot of bytes (potentially encrypted data).
+Finally, the victim sends a lot of data that looks like encrypted data exfiltrated from the malware with his length.</p>
+<h2 id="static-analysis-of-pe">Static analysis of PE</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130520967085576323/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130520967085576323/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130520967085576323/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130520967085576323/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130520967085576323/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130520967085576323/image.png" />
+We see &ldquo;UPX compressed&rdquo;, so we need to unpack it with UPX -d.</p>
+<blockquote>
+<p>note: UPX version &lt;= 3.96 has some problems with rva relocation on PE unpacking, so you need to update it with the latest version.</p>
+</blockquote>
+<p>Let&rsquo;s now open it with IDA
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130523427556569138/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130523427556569138/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130523427556569138/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130523427556569138/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130523427556569138/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130523427556569138/image.png" /></p>
+<p>This PE is using api hashing, so we will analyse it dynamically to get the functions name.</p>
+<h2 id="dynamic-analysis">Dynamic analysis</h2>
+<p>The first function executes a Virtual Alloc, and print some strings.</p>
+<p>The second one :
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130528206206812301/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130528206206812301/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130528206206812301/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130528206206812301/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130528206206812301/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130528206206812301/image.png" />
+As we can see, it will just create a Thread.</p>
+<p>The third one is more interesting, it calls 3 functions :
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130528855745101915/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130528855745101915/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130528855745101915/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130528855745101915/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130528855745101915/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130528855745101915/image.png" /></p>
+<h3 id="ntsetinformationthread">NtSetInformationThread</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130529225502359602/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130529225502359602/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130529225502359602/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130529225502359602/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130529225502359602/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130529225502359602/image.png" />
+By reading the doc we know that it will collect some informations about a thread. It will set 0x11 to ThreadInformationClass and it correspond to this:</p>
+<pre tabindex="0"><code>ThreadInfoClass = (
+                       ThreadBasicInformation,
+                       ThreadTimes,
+                       ThreadPriority,
+                       ThreadBasePriority,
+                       ThreadAffinityMask,
+                       ThreadImpersonationToken,
+                       ThreadDescriptorTableEntry,
+                       ThreadEnableAlignmentFaultFixup,
+                       ThreadEventPair_Reusable,
+                       ThreadQuerySetWin32StartAddress,
+                       ThreadZeroTlsCell,
+                       ThreadPerformanceCount,
+              ...
+                       ThreadIsIoPending,
+                       ThreadHideFromDebugger, {&lt;--}
+                       ThreadBreakOnTermination,
+                       ThreadSwitchLegacyState,
+                       ...
+                       ThreadSuspendCount,
+                       ThreadActualGroupAffinity,
+                       ThreadDynamicCodePolicyInfo,
+                       MaxThreadInfoClass
+ );
+</code></pre><p>ThreadHideFromDebugger is a flag to delete SEH (Structured Exception Handler) of the debugger on a thread given in argument. So in our case, the function takes in argument the handle of CreateThread and set HideFromDebuger to make the debugger crash on this thread.</p>
+<p>This anti-debug will prevent us from debugging the next thread. The solution is to bypass it by patching the function NtSetInformationThread in order to resume debugging.</p>
+<p>The next 2 functions (ResumeThread and WaitForSingleObject) will start the new thread with anti debug.
+After patching the first function, we get into the thread correctly :</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130536928320700576/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130536928320700576/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130536928320700576/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130536928320700576/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130536928320700576/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130536928320700576/image.png" /></p>
+<p>Now we extract the shellcode to analyse it further with miasm.</p>
+<h1 id="miasm-analysis">Miasm analysis</h1>
+<p>After analysing the shellcode with miasm we know :
+The shellcode will receive a key from the C2, encrypt it and send it back to the C2. This key will allow us to decipher the new shellcode sent by the C2. We just have to emulate the execution of this malare in miasm, and set all the values that we received from the C2 accordingly.</p>
+<p>Our script being quite big, we will comment all important lines :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">pm</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">miasm.jitter.csts</span> <span class="kn">import</span> <span class="n">PAGE_READ</span><span class="p">,</span> <span class="n">PAGE_WRITE</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">miasm.analysis.sandbox</span> <span class="kn">import</span> <span class="n">Sandbox_Win_x86_32</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">miasm.core.locationdb</span> <span class="kn">import</span> <span class="n">LocationDB</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">miasm.os_dep.common</span> <span class="kn">import</span> <span class="n">get_win_str_a</span><span class="p">,</span> <span class="n">get_win_str_w</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">crcmod</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Parse arguments</span>
+</span></span><span class="line"><span class="cl"><span class="n">parser</span> <span class="o">=</span> <span class="n">Sandbox_Win_x86_32</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&#34;PE sandboxer&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;filename&#34;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;PE Filename&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;shellcode&#34;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;Shellcode file&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">options</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Emulate NtAllocateVirtualMemory, it just need a return of 0</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">NtAllocateVirtualMemory</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Emulate the connection with the C2</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">ws2_32_connect</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Emulate the receive function</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">ws2_32_recv</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;recv&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Emulate the seconde receive wich is the size of the next receive</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">recv1</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;recv1&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3rd receive which is the key send by the C2</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">recv2</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">set_mem</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x13\x37\xCA\xFE\xBA\xBE\x04\x20</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;recv2&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Receive the length of the next shellcode that the C2 will send</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">recv3</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mi">538</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;recv3&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Receive the shellcode</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">recvshellcode</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">set_mem</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\xe7\xac\xbf\x87\xc2\xd1\xb4\x0a\x9e\x40\xbf\x86\xc2\xb5\xd2\x7f\x66\x40\xbf\x0d\x82\xdd\xf8\x0f\x72\xcb\xff\x96\x4b\x94\x83\xc4\x2e\x7c\x34\xca\xca\xa9\x72\x8e\xef\x0d\x53\x0d\x9b\xf1\x72\x8c\xef\x81\x8e\x79\x49\xe5\xc8\x4e\xa8\x71\x6d\xb7\x02\x7d\x72\x8d\x5a\x40\xca\x7f\x43\x2b\x82\x46\x66\x40\xcb\x85\x85\x3a\x96\xc4\x23\xb0\x34\xf3\x2e\x5a\x05\x6b\x67\x86\xb0\x31\xf6\xaf\xf8\x02\x8a\xcb\xf6\x9a\xc3\x10\xf8\x7b\xd7\x41\x79\x0f\x2b\x52\x9a\x6f\x37\xc9\x56\x05\x2b\xf5\x22\xb0\xb0\xf8\x99\xe0\xad\xad\x23\xf7\x6c\x76\x86\xe3\x92\x69\x15\x6e\x47\x6c\xef\x3e\xa4\xdb\x56\x68\x36\xf8\x9f\x8c\xa3\xf6\x23\xf7\x47\x4a\x93\xe3\x92\x69\x5f\x45\x51\x60\xef\x3e\xc8\xb7\x12\x69\x36\xf8\x9e\xbb\xa3\xf0\x23\xf7\x5d\x25\x9e\x8c\x92\x69\x17\x6e\x06\x4a\xef\x3f\xc2\xd1\x73\x4f\xdc\x6c\xbf\x86\xc2\x51\x47\x43\x33\xc3\x7e\x87\xfb\x00\x06\xba\xef\x25\x6f\xec\xee\x58\x16\x83\xa1\x05\x7f\x86\xc2\xd1\x73\x88\x23\xfc\xbf\x86\xc2\xd1\xb4\x0a\xde\x40\xbf\x86\xc2\x5a\x0e\x93\xef\xae\x3c\x68\x86\x5a\x3e\xaf\xdd\x40\xbf\x86\xc2\x58\xab\x7e\xb4\x11\x06\x8e\xc2\xd1\x73\xb8\x97\x19\x36\x56\xc3\x21\xf9\x4f\xef\xba\xbe\x5c\x48\xc3\x43\x9f\xef\xba\xbe\x5c\x4a\xd3\x30\x76\xad\x34\xbd\x6d\x1a\x69\x78\x53\x3d\x4c\xef\x3e\xd8\x89\x6f\x14\x36\xf8\xe6\x9d\xf5\xc9\x23\xf7\x7e\x77\xa3\x86\x92\x69\x44\x4c\x3d\x1b\xef\x3e\xd8\x8a\x77\x5e\x36\xf8\xbb\xb1\xd9\xcc\x23\xf7\x51\x5f\xe6\x82\x92\x69\x6f\x4f\x3f\x5b\xef\x3f\xc2\xd1\x73\x4f\xdc\x64\xbf\x86\xc2\x51\x47\x43\x0e\xc3\x7e\x87\xfb\x00\x06\xba\xef\x25\x3f\xec\xe6\x58\xd6\x33\x99\xbf\x40\x0d\xbf\x0d\xfa\xa1\xe7\xae\x3f\x86\xc2\xd1\xf8\x79\xed\x0d\x5f\x3d\xc2\xd1\x73\x4f\xef\x98\x8e\x54\x93\x68\x57\x4f\x66\x40\x48\x77\x9b\x58\xa3\x4e\x96\xca\xbf\x0f\x38\xd0\xa9\xc5\x74\x40\x6f\x0f\x38\xd0\xa9\xc7\x64\x03\x86\x4d\xb6\xd3\x98\x97\xed\x3d\x63\x0d\xb7\x01\xf8\x02\x86\xfb\xbf\x86\xc2\xd1\xfa\x97\x57\x92\xee\x3f\xee\xd1\x73\x4f\x91\xb1\xe6\x0f\x12\xd0\x83\xc5\x66\xc9\x45\x87\x18\x5b\x61\x7f\xb6\xc9\x45\x87\x18\x59\x71\x0c\x5f\x8b\xcb\x84\x29\x09\x19\x4f\x0c\x44\x36\x6e\x41\x39\x53\x1f\xed\x05\x47\xd6\x49\x84\xcb\xb0\xb4\x2a\xbf\x0d\x87\x31\x23\xc4\x23\x9c\xef\x0d\x87\x29\x23\xc4\x33\xf8\x40\x54\x43\x15\x73\x4e\x66\x40</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Emulate the send function</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">ws2_32_send</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;send&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># File descriptor of socket function</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">ws2_32_socket</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mh">0x3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Add the hostname to emulate correctly the program</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">ws2_32_gethostbyname</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">add_memory_page</span><span class="p">(</span><span class="mh">0x11111111</span><span class="p">,</span><span class="n">PAGE_READ</span> <span class="o">|</span> <span class="n">PAGE_WRITE</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">set_mem</span><span class="p">(</span><span class="mh">0x11111111</span><span class="o">+</span><span class="mh">0x14</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x7f\x00\x00\x01</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mh">0x11111111</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># implementation of CRC32 because miasm didn&#39;t implement it :(</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hashfunc</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">print_hash</span><span class="o">=</span><span class="kc">True</span> <span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">crc32_func</span> <span class="o">=</span> <span class="n">crcmod</span><span class="o">.</span><span class="n">mkCrcFun</span><span class="p">(</span><span class="mh">0x11EDC6F41</span><span class="p">,</span> <span class="n">initCrc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xorOut</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">h</span> <span class="o">=</span> <span class="n">crc32_func</span><span class="p">((</span><span class="n">function</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">h</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">code_sentinelleCRC32</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">ESI</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span> <span class="o">=</span> <span class="n">hashfunc</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span><span class="p">)</span><span class="o">+</span><span class="n">get_win_str_a</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">ESI</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span> <span class="o">==</span> <span class="mh">0xB128F4E7</span> <span class="ow">or</span> <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span> <span class="o">==</span> <span class="mh">0xF3596BDF</span> <span class="ow">or</span> <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span> <span class="o">==</span> <span class="mh">0x95B93110</span> <span class="ow">or</span> <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span> <span class="o">==</span> <span class="mh">0x6C81586F</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="nb">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EDX</span><span class="p">),</span><span class="n">get_win_str_a</span><span class="p">(</span><span class="n">jitter</span><span class="p">,</span> <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">ESI</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">code_sentinelle1</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span> <span class="o">=</span> <span class="mh">0x11111111</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># extracting the deciphered shellcode</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">saveshellcode</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;shellcodeFinal.bin&#34;</span><span class="p">,</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">get_mem</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">ECX</span><span class="p">,</span> <span class="mi">65535</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Extraction done.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Code sentinelle allow us to put breakpoints to debug the shellcode as we want, print some registers etc</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">code_sentinelle</span><span class="p">(</span><span class="n">jitter</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(jitter.cpu.ECX)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(hex(jitter.cpu.ESI))</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(chr(jitter.cpu.EAX))</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(jitter.libs.fad2cname[jitter.cpu.EDX])</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(hex(jitter.cpu.EAX))</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">get_mem</span><span class="p">(</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">ECX</span><span class="p">,</span> <span class="mi">65535</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(get_win_str_a(jitter, jitter.cpu.ESP + jitter.cpu.ECX, 0x1), end=&#39;&#39;)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(get_win_str_a(jitter, jitter.cpu.ESI, 0x40), end=&#39;&#39;)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#ree-windows-license.uwu</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#hellgen</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#print(get_win_str_a(jitter, 0x40000e8, 40))</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Create sandbox and emulate PE headers</span>
+</span></span><span class="line"><span class="cl"><span class="n">loc_db</span> <span class="o">=</span> <span class="n">LocationDB</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span> <span class="o">=</span> <span class="n">Sandbox_Win_x86_32</span><span class="p">(</span><span class="n">loc_db</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">shellcode</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">run_addr</span>  <span class="o">=</span> <span class="mh">0x4000000</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#print(sb.jitter.user_globals)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Add functions to miasm</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;ws2_32_WSAStartup&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;wsock32_WSAStartup&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;ntdll_NtAllocateVirtualMemory&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">NtAllocateVirtualMemory</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;ws2_32_socket&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws2_32_socket</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;ws2_32_gethostbyname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws2_32_gethostbyname</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;ws2_32_connect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws2_32_connect</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;ws2_32_send&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws2_32_send</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">user_globals</span><span class="p">[</span><span class="s1">&#39;ws2_32_recv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws2_32_recv</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Map the shellcode in memory</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">add_memory_page</span><span class="p">(</span><span class="n">run_addr</span><span class="p">,</span> <span class="n">PAGE_READ</span> <span class="o">|</span> <span class="n">PAGE_WRITE</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Add the stack to the memory</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">add_memory_page</span><span class="p">(</span><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EBP</span><span class="o">+</span><span class="mh">0xffffff00</span><span class="p">,</span> <span class="n">PAGE_READ</span> <span class="o">|</span> <span class="n">PAGE_WRITE</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="o">*</span><span class="mh">0x1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#sb.jitter.add_breakpoint(run_addr+0x274, code_sentinelle)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#sb.jitter.add_breakpoint(run_addr+0x280, code_sentinelle)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">add_breakpoint</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x1df</span><span class="p">,</span> <span class="n">code_sentinelle1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#sb.jitter.add_breakpoint(run_addr+0x1f8, code_sentinelle)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Bypass some functions that are not in miasm and useless for us</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">add_memory_page</span><span class="p">(</span><span class="mh">0x100007f</span><span class="p">,</span> <span class="n">PAGE_READ</span> <span class="o">|</span> <span class="n">PAGE_WRITE</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x90</span><span class="s2">&#34;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">add_memory_page</span><span class="p">(</span><span class="mh">0x140000</span><span class="p">,</span> <span class="n">PAGE_READ</span> <span class="o">|</span> <span class="n">PAGE_WRITE</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x90</span><span class="s2">&#34;</span><span class="o">*</span><span class="mi">100000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">add_memory_page</span><span class="p">(</span><span class="mh">0x7ffdf002</span><span class="p">,</span> <span class="n">PAGE_READ</span> <span class="o">|</span> <span class="n">PAGE_WRITE</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x90</span><span class="s2">&#34;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">set_mem</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x3b5</span><span class="p">,</span><span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x90</span><span class="s2">&#34;</span><span class="o">*</span><span class="mi">7</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># call the reimplementation of CRC32</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">add_breakpoint</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x3bc</span><span class="p">,</span> <span class="n">code_sentinelleCRC32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># We put breakpoints on recv functions to emulate them and set to memory the value that we get in the PCAP like the key</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">add_breakpoint</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x238</span><span class="p">,</span> <span class="n">recv1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">add_breakpoint</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x239</span><span class="p">,</span> <span class="n">recv2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">add_breakpoint</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x302</span><span class="p">,</span> <span class="n">recv3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Put in memory our shellcode</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">add_breakpoint</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x31B</span><span class="p">,</span> <span class="n">recvshellcode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Get the new deciphered shellcode and save it in a file</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">jitter</span><span class="o">.</span><span class="n">add_breakpoint</span><span class="p">(</span><span class="n">run_addr</span><span class="o">+</span><span class="mh">0x4B2</span><span class="p">,</span> <span class="n">saveshellcode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#sb.jitter.add_breakpoint(run_addr+0x35F, saveshellcode)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#sb.jitter.add_breakpoint(run_addr+0x4A2, saveshellcode)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Run</span>
+</span></span><span class="line"><span class="cl"><span class="n">sb</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_addr</span><span class="p">)</span>
+</span></span></code></pre></div><p>Now we get a new shellcode which is the malware.</p>
+<h2 id="analysis-of-the-last-shellcode">Analysis of the last shellcode</h2>
+<p>This shellcode will use data from the last shellcode, so it was hard for use to emulate it with miasm again, we decided to switch to static analysis.</p>
+<h3 id="first-part-of-the-shellcode">First part of the shellcode</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130546842539663430/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130546842539663430/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130546842539663430/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130546842539663430/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130546842539663430/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130546842539663430/image.png" /></p>
+<p>It walks into the PEB to get the base adress of the actual process (us). That&rsquo;s why we couldn&rsquo;t emulate it with miasm unfortunately. It walks into the export table to get the function name and produce a checksum of this name. It compares this result to 0x9f1 to see if it&rsquo;s the correct one.</p>
+<p>We fetch all the suspicious function names from the thread, we compute the checksum and compare with the wanted hash.</p>
+<p>With that in mind, we get this function :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">BOOL</span> <span class="kr">__cdecl</span> <span class="nf">ReadFileContentsGenerator</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="n">a1</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span><span class="n">a2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">BOOL</span> <span class="n">result</span><span class="p">;</span> <span class="c1">// eax
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">v3</span><span class="p">;</span> <span class="c1">// eax
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">CHAR</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// cl
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">v5</span><span class="p">;</span> <span class="c1">// edx
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">CHAR</span> <span class="o">*</span><span class="n">v6</span><span class="p">;</span> <span class="c1">// edi
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="o">*</span><span class="n">v8</span><span class="p">;</span> <span class="c1">// ebx
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">DWORD</span> <span class="n">v9</span><span class="p">;</span> <span class="c1">// edi
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="o">*</span><span class="n">v10</span><span class="p">;</span> <span class="c1">// esi
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">DWORD</span> <span class="n">FileSizeHigh</span><span class="p">;</span> <span class="c1">// [esp+18h] [ebp-198h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">DWORD</span> <span class="n">NumberOfBytesRead</span><span class="p">;</span> <span class="c1">// [esp+1Ch] [ebp-194h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">_OFSTRUCT</span> <span class="n">ReOpenBuff</span><span class="p">;</span> <span class="c1">// [esp+20h] [ebp-190h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">CHAR</span> <span class="n">FileName</span><span class="p">[</span><span class="mi">260</span><span class="p">];</span> <span class="c1">// [esp+A8h] [ebp-108h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="n">a2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">hFindFile</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hFindFile</span> <span class="o">=</span> <span class="nf">FindFirstFileA</span><span class="p">(</span><span class="s">&#34;C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">Administrator</span><span class="se">\\</span><span class="s">Documents</span><span class="se">\\</span><span class="s">*&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FindFileData</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">FindNextFileA</span><span class="p">(</span><span class="n">hFindFile</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FindFileData</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="nf">FindNextFileA</span><span class="p">(</span><span class="n">hFindFile</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FindFileData</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="n">FindFileData</span><span class="p">.</span><span class="n">dwFileAttributes</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">memset</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mh">0x100u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v3</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">do</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v4</span> <span class="o">=</span> <span class="o">::</span><span class="n">FileName</span><span class="p">[</span><span class="n">v3</span><span class="o">++</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ReOpenBuff</span><span class="p">.</span><span class="n">szPathName</span><span class="p">[</span><span class="n">v3</span> <span class="o">+</span> <span class="mi">127</span><span class="p">]</span> <span class="o">=</span> <span class="n">v4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">while</span> <span class="p">(</span> <span class="n">v4</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">FileName</span><span class="p">[</span><span class="mi">33</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v5</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">FindFileData</span><span class="p">.</span><span class="n">cFileName</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v6</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ReOpenBuff</span><span class="p">.</span><span class="n">szPathName</span><span class="p">[</span><span class="mi">127</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">while</span> <span class="p">(</span> <span class="o">*++</span><span class="n">v6</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">qmemcpy</span><span class="p">(</span><span class="n">v6</span><span class="p">,</span> <span class="n">FindFileData</span><span class="p">.</span><span class="n">cFileName</span><span class="p">,</span> <span class="n">v5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v8</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nf">OpenFile</span><span class="p">(</span><span class="n">FileName</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ReOpenBuff</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">FileSizeHigh</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v9</span> <span class="o">=</span> <span class="nf">GetFileSize</span><span class="p">(</span><span class="n">v8</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FileSizeHigh</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="o">*</span><span class="n">a2</span> <span class="o">=</span> <span class="n">v9</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v10</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="n">v9</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="o">*</span><span class="n">a1</span> <span class="o">=</span> <span class="n">v10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">memset</span><span class="p">(</span><span class="n">v10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v9</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">NumberOfBytesRead</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">ReadFile</span><span class="p">(</span><span class="n">v8</span><span class="p">,</span> <span class="n">v10</span><span class="p">,</span> <span class="n">v9</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">NumberOfBytesRead</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">result</span> <span class="o">=</span> <span class="nf">CloseHandle</span><span class="p">(</span><span class="n">v8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This function is simple, it takes a pointer for the 1st argument and the pointer size for the second argument. It set the content of the 3rd file in admin folder to the first argument pointer.</p>
+<p>We then go back in our shellcode, it loads a first key, xor it with 0x55 and save it.
+Next, there is a tricky thing in our case because it will search for data in the first shellcode.
+We skip this step for now.
+Then, a second key is loaded, and its is xored with 0x68.
+The second key will be added to the content of the file that we got before.
+The final step of this shellcode is to xor our first key with the content that we modified before.</p>
+<p>So we get this :</p>
+<p>$$((P_{i} \oplus x_{i \mod 8}) + K1_{i \mod 36}) \oplus K2_{i \mod 44}$$</p>
+<p>Reversed :</p>
+<p>$$((C_{i} \oplus K2_{i \mod 44}) - K1_{i \mod 36}) \oplus x_{i \mod 8} = P_{i}$$</p>
+<p>P = PlainText / x = the unknow key / C = cipher text</p>
+<p>Now for the unknow key, we just have to perform a XOR known plaintext given the short length of this key.</p>
+<p>We can now extract the exfiltrated data and decrypt it.
+We need to search for cyclic pattern of 8 bytes of 0x00.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130558598397841499/image.png"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130558598397841499/image.png, https://cdn.discordapp.com/attachments/993795267511996466/1130558598397841499/image.png 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130558598397841499/image.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130558598397841499/image.png"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130558598397841499/image.png" />
+Now we have our new key : 0x46609fe251536f</p>
+<p>After deciphering it, we see that this a png but it is corrupted. Every bytes are in lowercase. In fact this PNG is using GIMP and it puts a lot of 0x20 (spaces) after editing it. So the key must be xored by 0x20 because we didn&rsquo;t perform a xor known plaintext on 0x20 but on 0x00.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">c_uint8</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">xor_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="sa">b</span><span class="s2">&#34;d!`</span><span class="se">\n</span><span class="s2">;e!</span><span class="se">\n</span><span class="s2">!=a!</span><span class="se">\n</span><span class="s2">fa&amp;,</span><span class="se">\n</span><span class="s2">7 !</span><span class="se">\n</span><span class="s2">,e </span><span class="se">\n</span><span class="s2">a</span><span class="se">\&#39;</span><span class="s2">f</span><span class="se">\n</span><span class="s2">%</span><span class="se">\&#39;</span><span class="s2">f!!,</span><span class="se">\n</span><span class="s2">69e&amp;fo|&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xor_key</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xor_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">xor_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="mh">0x55</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;aaa&#34;</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">xor_key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">xor_key</span><span class="p">)]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sub_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x1c\x00</span><span class="s2">Y</span><span class="se">\x1b</span><span class="s2">7</span><span class="se">\x1f</span><span class="s2">Y</span><span class="se">\x04\x04</span><span class="s2">7</span><span class="se">\x1b\x1d\x1a</span><span class="s2">[</span><span class="se">\x04\x11</span><span class="s2">7</span><span class="se">\x03</span><span class="s2">[[</span><span class="se">\x18</span><span class="s2">7</span><span class="se">\x1c\x00</span><span class="s2">Y</span><span class="se">\x1b</span><span class="s2">7</span><span class="se">\x18\x1a</span><span class="s2">X</span><span class="se">\x1c</span><span class="s2">[</span><span class="se">\x0b\x1c</span><span class="s2">[</span><span class="se">\x0c</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sub_key</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sub_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="mh">0x68</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_uint8</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">sub_key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_key</span><span class="p">)])</span><span class="o">.</span><span class="n">value</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">second_xor_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x66\x40\xbf\x86\xc2\xd1\x73\x4f</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="p">(</span><span class="n">second_xor_key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">8</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;lol.png&#34;</span><span class="p">,</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span></code></pre></div><p>We finally get the good PNG which give us the flag  !</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/1085260262883463208/1130115150700093451/lol.png"
+        data-srcset="https://cdn.discordapp.com/attachments/1085260262883463208/1130115150700093451/lol.png, https://cdn.discordapp.com/attachments/1085260262883463208/1130115150700093451/lol.png 1.5x, https://cdn.discordapp.com/attachments/1085260262883463208/1130115150700093451/lol.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/1085260262883463208/1130115150700093451/lol.png"
+        title="https://cdn.discordapp.com/attachments/1085260262883463208/1130115150700093451/lol.png" />
+It was a good opportunity to sharpen our skills on miasm.</p>
+<p>If you have any questions on the miasm part, feel free ask us questions.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.discordapp.com/attachments/993795267511996466/1130568342118355025/hecker-hecker-beluga.gif"
+        data-srcset="https://cdn.discordapp.com/attachments/993795267511996466/1130568342118355025/hecker-hecker-beluga.gif, https://cdn.discordapp.com/attachments/993795267511996466/1130568342118355025/hecker-hecker-beluga.gif 1.5x, https://cdn.discordapp.com/attachments/993795267511996466/1130568342118355025/hecker-hecker-beluga.gif 2x"
+        data-sizes="auto"
+        alt="https://cdn.discordapp.com/attachments/993795267511996466/1130568342118355025/hecker-hecker-beluga.gif"
+        title="https://cdn.discordapp.com/attachments/993795267511996466/1130568342118355025/hecker-hecker-beluga.gif" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-09-04</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="http://example.org/posts/writeup-htb-business-ctf-license-generator/" data-title="Writeup HTB Business CTF License Generator"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://example.org/posts/writeup-htb-business-ctf-license-generator/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://example.org/posts/writeup-htb-business-ctf-license-generator/" data-title="Writeup HTB Business CTF License Generator"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://example.org/posts/writeup-htb-business-ctf-license-generator/" data-title="Writeup HTB Business CTF License Generator"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://example.org/posts/writeup-htb-business-ctf-license-generator/" data-title="Writeup HTB Business CTF License Generator"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/hello/" class="prev" rel="prev" title="Hello"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Hello</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.118.2">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lxt3h</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/copy-tex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

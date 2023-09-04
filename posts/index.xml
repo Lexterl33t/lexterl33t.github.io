@@ -3,7 +3,18 @@
         <title>All Posts - LexterSecurity</title>
         <link>http://example.org/posts/</link>
         <description>All Posts | LexterSecurity</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 04 Sep 2023 03:12:28 &#43;0200</lastBuildDate><atom:link href="http://example.org/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 04 Sep 2023 03:54:04 &#43;0200</lastBuildDate><atom:link href="http://example.org/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Writeup HTB Business CTF License Generator</title>
+    <link>http://example.org/posts/writeup-htb-business-ctf-license-generator/</link>
+    <pubDate>Mon, 04 Sep 2023 03:54:04 &#43;0200</pubDate>
+    <author>Lxt3h</author>
+    <guid>http://example.org/posts/writeup-htb-business-ctf-license-generator/</guid>
+    <description><![CDATA[Free license generator by Lxt3h and mhoste
+This was the hardest reverse engineering challenge from HTB Buisness CTF. This chall helped us to improve our skills in WinAPI and Miasm.
+The challenge provides us a PCAP and a x86 PE binary being a malware. The PCAP is the a record of the communication between the victim and the C2.
+PCAP analysis This is what it looks like : Here is a diagram of the communication :]]></description>
+</item>
+<item>
     <title>Hello</title>
     <link>http://example.org/posts/hello/</link>
     <pubDate>Mon, 04 Sep 2023 03:12:28 &#43;0200</pubDate>
