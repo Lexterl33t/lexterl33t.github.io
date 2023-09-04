@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>LexterSecurity</title>
+        <link>http://example.org/</link>
+        <description>This is my cool site</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 04 Sep 2023 03:12:28 &#43;0200</lastBuildDate>
+            <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+        <item>
+    <title>Hello</title>
+    <link>http://example.org/posts/hello/</link>
+    <pubDate>Mon, 04 Sep 2023 03:12:28 &#43;0200</pubDate>
+    <author>lx3th</author>
+    <guid>http://example.org/posts/hello/</guid>
+    <description><![CDATA[ func main() { fmt.Println(&#34;Hello, world&#34;) } ]]></description>
+</item>
+</channel>
+</rss>
